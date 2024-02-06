@@ -1,0 +1,235 @@
+{
+	"info": {
+		"_postman_id": "e437a7d7-4ce8-47ac-b912-62d108a64f5d",
+		"name": "Asset Management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "11310531"
+	},
+	"item": [
+		{
+			"name": "Find",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "fatoni3",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "fatoni@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "fullname",
+							"value": "ach fatoni",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": "127.0.0.1:8181/v1/user/3"
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "fatoni3",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "fatoni@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "fullname",
+							"value": "ach fatoni",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "127.0.0.1:8181/v1/users?username=eko",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8181",
+					"path": [
+						"v1",
+						"users"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "username",
+							"value": "eko"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Store",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "zubairi",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "zubairi@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "zubairi",
+							"type": "text"
+						},
+						{
+							"key": "fullname",
+							"value": "zubairi ahmad",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": "127.0.0.1:8181/v1/user"
+			},
+			"response": []
+		},
+		{
+			"name": "Upload",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "zubairi",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "zubairi@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "zubairi",
+							"type": "text"
+						},
+						{
+							"key": "fullname",
+							"value": "zubairi ahmad",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": "127.0.0.1:8181/v1/user"
+			},
+			"response": []
+		},
+		{
+			"name": "Destroy",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "fatoni3",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "fatoni@example.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "fullname",
+							"value": "ach fatoni",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "1dfsdf",
+							"type": "text"
+						}
+					]
+				},
+				"url": "127.0.0.1:8181/v1/user/5"
+			},
+			"response": []
+		}
+	]
+}

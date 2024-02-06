@@ -1,6 +1,8 @@
 ## Init DB
 - buat database postgres baru
-- restore file `backup_db.sql`
+- restore file `init-project/backup_db.sql`
+- run sql `init-project/seeder.sql`
+- collection postman `init-project/Asset Management.postman_collection.json`
 
 ## Run Project
 
