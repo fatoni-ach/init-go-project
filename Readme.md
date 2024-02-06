@@ -1,8 +1,8 @@
-# Init DB
+## Init DB
 - buat database postgres baru
 - restore file `backup_db.sql`
 
-# Run Project
+## Run Project
 
 - download package
 ```
