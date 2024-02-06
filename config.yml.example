@@ -1,0 +1,51 @@
+  debug: true
+
+  key: dzzVdHUSQVvxMQJVw4Mm4dTZc6tHoUDh
+
+  name: asset-api.onecms
+
+  server:
+    address: :8080
+
+  context:
+    timeout: 2
+
+  database:
+      host: 127.0.0.1
+      port: 3306
+      name: goproject
+      user: root
+      pass: root
+
+  aws:
+    access_key: _
+    secret_key: _
+    region: _
+    bucket: _
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+  email:
+    username: 
+    password: 
+    address: no-reply@idntimes.com
+    name: Go Project
+    driver: smpt
+    host: 10.100.100.107
+    port: 25
+
+  log:
+    level: trace
+    path: storage
+    type: file
+    max:
+      age: 10
+
+  cdn:
+    url: localhost
+    oss: false
+
+  edit:
+    count: 1
