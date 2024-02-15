@@ -212,3 +212,50 @@ func TestFindFailed(t *testing.T) {
 	assert.Equal(t, "Failed Find User", err.Error())
 	assert.Equal(t, expectedResult, result)
 }
+
+func TestDestroySuccess(t *testing.T) {
+	mockDb, mock, _ := sqlmock.New()
+
+	dialector := postgres.New(postgres.Config{
+		Conn:       mockDb,
+		DriverName: "postgres",
+	})
+
+	db, _ := gorm.Open(dialector, &gorm.Config{})
+
+	mock.ExpectBegin()
+	mock.ExpectExec(regexp.QuoteMeta(`UPDATE "users" SET "deleted_at"=$1 WHERE "users"."id" = $2 AND "users"."deleted_at" IS NULL`)).
+		WithArgs(sqlmock.AnyArg(), 1).
+		WillReturnResult(sqlmock.NewResult(1, 1))
+
+	mock.ExpectCommit()
+
+	gormRepo := GormRepository{db: db}
+	err := gormRepo.Destroy(1)
+
+	assert.Equal(t, nil, err)
+}
+
+func TestDestroyFailed(t *testing.T) {
+	mockDb, mock, _ := sqlmock.New()
+
+	dialector := postgres.New(postgres.Config{
+		Conn:       mockDb,
+		DriverName: "postgres",
+	})
+
+	db, _ := gorm.Open(dialector, &gorm.Config{})
+
+	mock.ExpectBegin()
+	mock.ExpectExec(regexp.QuoteMeta(`UPDATE "users" SET "deleted_at"=$1 WHERE "users"."id" = $2 AND "users"."deleted_at" IS NULL`)).
+		WithArgs(sqlmock.AnyArg(), 1).
+		WillReturnResult(sqlmock.NewResult(1, 1)).
+		WillReturnError(errors.New("Failed Delete User"))
+
+	mock.ExpectRollback()
+
+	gormRepo := GormRepository{db: db}
+	err := gormRepo.Destroy(1)
+
+	assert.Equal(t, "Failed Delete User", err.Error())
+}
