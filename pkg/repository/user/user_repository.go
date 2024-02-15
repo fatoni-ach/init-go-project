@@ -9,17 +9,17 @@ import (
 	"gorm.io/gorm"
 )
 
-type gormRepository struct {
+type GormRepository struct {
 	db *gorm.DB
 }
 
 func NewRepository() repository.User {
-	return &gormRepository{
+	return &GormRepository{
 		services.DB,
 	}
 }
 
-func (repo *gormRepository) Fetch(filter url.Values) ([]*models.User, error) {
+func (repo *GormRepository) Fetch(filter url.Values) ([]*models.User, error) {
 	var users []*models.User
 
 	query := repo.db.Select("username", "email", "fullname")
@@ -39,7 +39,7 @@ func (repo *gormRepository) Fetch(filter url.Values) ([]*models.User, error) {
 	return users, nil
 }
 
-func (repo *gormRepository) Store(user models.User) (models.User, error) {
+func (repo *GormRepository) Store(user models.User) (models.User, error) {
 	err := repo.db.Create(&user).Error
 
 	if err != nil {
@@ -50,7 +50,7 @@ func (repo *gormRepository) Store(user models.User) (models.User, error) {
 	return user, nil
 }
 
-func (repo *gormRepository) Find(id int32) (models.User, error) {
+func (repo *GormRepository) Find(id int32) (models.User, error) {
 	var user models.User
 	if err := repo.db.Find(&user, id).Error; err != nil {
 		services.RecoverPanic()
@@ -59,7 +59,7 @@ func (repo *gormRepository) Find(id int32) (models.User, error) {
 	return user, nil
 }
 
-func (repo *gormRepository) Destroy(id int) error {
+func (repo *GormRepository) Destroy(id int) error {
 	if err := repo.db.Delete(&models.User{}, id).Error; err != nil {
 		services.RecoverPanic()
 		return err
