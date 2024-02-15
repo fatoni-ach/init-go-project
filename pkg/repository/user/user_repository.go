@@ -22,7 +22,7 @@ func NewRepository() repository.User {
 func (repo *GormRepository) Fetch(filter url.Values) ([]*models.User, error) {
 	var users []*models.User
 
-	query := repo.db.Select("username", "email", "fullname")
+	query := repo.db.Select("id", "username", "email", "fullname")
 	if filter.Has("email") {
 		query.Where("email LIKE ?", "%"+filter.Get("email")+"%")
 	}

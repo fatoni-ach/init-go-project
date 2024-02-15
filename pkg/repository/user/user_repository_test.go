@@ -4,6 +4,7 @@ import (
 	"app-service-com/pkg/models"
 	"database/sql"
 	"errors"
+	"net/url"
 	"regexp"
 	"testing"
 	"time"
@@ -13,6 +14,77 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
+
+func TestFetchSuccess(t *testing.T) {
+	mockDb, mock, _ := sqlmock.New()
+
+	dialector := postgres.New(postgres.Config{
+		Conn:       mockDb,
+		DriverName: "postgres",
+	})
+
+	db, _ := gorm.Open(dialector, &gorm.Config{})
+
+	rows := sqlmock.
+		NewRows([]string{"id", "username", "email", "fullname"}).
+		// AddRows([][]driver.Value{
+		// 	{"1", "superuser", "superuser@example.com", "superuser"},
+		// 	{"2", "user-1", "user1@example.com", "user 1"},
+		// }...)
+		AddRow("1", "superuser", "superuser@example.com", "superuser").
+		AddRow("2", "user-1", "user1@example.com", "user 1")
+
+	mock.ExpectQuery(regexp.QuoteMeta(`SELECT "id","username","email","fullname" FROM "users" WHERE "users"."deleted_at" IS NULL`)).
+		WillReturnRows(rows)
+
+	gormRepo := GormRepository{db: db}
+
+	user1 := models.User{
+		ID:       1,
+		Email:    "superuser@example.com",
+		Username: "superuser",
+		Fullname: "superuser",
+	}
+	user2 := models.User{
+		ID:       2,
+		Email:    "user1@example.com",
+		Username: "user-1",
+		Fullname: "user 1",
+	}
+
+	expectedResult := []*models.User{&user1, &user2}
+	results, err := gormRepo.Fetch(url.Values{})
+
+	assert.Equal(t, nil, err)
+	assert.Equal(t, expectedResult, results)
+}
+
+func TestFetchFailed(t *testing.T) {
+	mockDb, mock, _ := sqlmock.New()
+
+	dialector := postgres.New(postgres.Config{
+		Conn:       mockDb,
+		DriverName: "postgres",
+	})
+
+	db, _ := gorm.Open(dialector, &gorm.Config{})
+
+	rows := sqlmock.
+		NewRows([]string{"id", "username", "email", "fullname"}).
+		AddRow("", "", "", "")
+
+	mock.ExpectQuery(regexp.QuoteMeta(`SELECT "id","username","email","fullname" FROM "users" WHERE "users"."deleted_at" IS NULL`)).
+		WillReturnRows(rows).
+		WillReturnError(errors.New("Failed Fetch Users"))
+
+	gormRepo := GormRepository{db: db}
+
+	expectedResult := []*models.User(nil)
+	results, err := gormRepo.Fetch(url.Values{})
+
+	assert.Equal(t, "Failed Fetch Users", err.Error())
+	assert.Equal(t, expectedResult, results)
+}
 
 func TestStoreSuccess(t *testing.T) {
 	mockDb, mock, _ := sqlmock.New()
