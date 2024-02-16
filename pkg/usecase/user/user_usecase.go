@@ -24,7 +24,7 @@ func (uc *usecase) Fetch(filter url.Values) ([]*models.User, error) {
 	users, err := uc.repo.Fetch(filter)
 	if err != nil {
 		services.WriteLog(err)
-		return nil, err
+		return []*models.User{}, err
 	}
 
 	return users, nil

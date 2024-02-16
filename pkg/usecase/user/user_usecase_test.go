@@ -29,8 +29,12 @@ func (repository *UserRepositoryMock) Store(user models.User) (models.User, erro
 
 func (repository *UserRepositoryMock) Fetch(filter url.Values) ([]*models.User, error) {
 
-	// fmt.Println(id)
-	return []*models.User{}, nil
+	args := repository.Mock.Called(filter)
+
+	result := args.Get(0).([]*models.User)
+	err := args.Error(1)
+
+	return result, err
 }
 
 func (repository *UserRepositoryMock) Find(id int32) (models.User, error) {
@@ -45,7 +49,7 @@ func (repository *UserRepositoryMock) Destroy(id int) error {
 	return nil
 }
 
-func TestUserRepository_Store(t *testing.T) {
+func TestUseUsecase_Store(t *testing.T) {
 
 	t.Run("test-store-success", func(t *testing.T) {
 		f := faketime.NewFaketime(2010, time.February, 10, 23, 0, 0, 0, time.Local)
@@ -121,4 +125,72 @@ func TestUserRepository_Store(t *testing.T) {
 		assert.Equal(t, &models.User{}, result)
 	})
 
+}
+
+func TestUserUsecase_Fetch(t *testing.T) {
+	t.Run("test-fetch-success", func(t *testing.T) {
+		f := faketime.NewFaketime(2010, time.February, 10, 0, 0, 0, 0, time.Local)
+		defer f.Undo()
+		f.Do()
+
+		now := time.Now()
+		expectedResult := []*models.User{
+			{
+				ID:       1,
+				Username: "superuser",
+				Email:    "superuser@example.com",
+				Fullname: "Super User",
+				CreatedAt: sql.NullTime{
+					Valid: true,
+					Time:  now,
+				},
+				UpdatedAt: sql.NullTime{
+					Valid: true,
+					Time:  now,
+				},
+				Password: "password111",
+			},
+			{
+				ID:       2,
+				Username: "superuser-2",
+				Email:    "superuser2@example.com",
+				Fullname: "Super User 2",
+				CreatedAt: sql.NullTime{
+					Valid: true,
+					Time:  now,
+				},
+				UpdatedAt: sql.NullTime{
+					Valid: true,
+					Time:  now,
+				},
+				Password: "password1111",
+			},
+		}
+
+		userRepoMock := new(UserRepositoryMock)
+		userUsecase := NewUseCase(userRepoMock)
+
+		userRepoMock.Mock.On("Fetch", url.Values{}).Return(expectedResult, nil)
+
+		result, err := userUsecase.Fetch(url.Values{})
+
+		assert.Nil(t, err)
+		assert.NotNil(t, result)
+		assert.Equal(t, expectedResult, result)
+	})
+
+	t.Run("test-fetch-failed", func(t *testing.T) {
+		expectedResult := []*models.User{}
+
+		userRepoMock := new(UserRepositoryMock)
+		userUsecase := NewUseCase(userRepoMock)
+
+		userRepoMock.Mock.On("Fetch", url.Values{}).Return(expectedResult, errors.New("Failed Fetch User"))
+
+		result, err := userUsecase.Fetch(url.Values{})
+
+		assert.NotNil(t, err)
+		assert.Equal(t, "Failed Fetch User", err.Error())
+		assert.Equal(t, expectedResult, result)
+	})
 }
