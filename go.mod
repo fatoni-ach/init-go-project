@@ -1,6 +1,6 @@
 module app-service-com
 
-go 1.19
+go 1.22
 
 require (
 	bou.ke/monkey v1.0.2 // indirect
