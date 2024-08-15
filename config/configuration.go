@@ -13,7 +13,7 @@ var (
 )
 
 func initialize() {
-	viper.SetConfigFile(`./config.yml`)
+	viper.SetConfigFile(`./.env`)
 
 	viper.ReadInConfig()
 

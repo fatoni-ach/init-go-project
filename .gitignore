@@ -1,2 +1,4 @@
 /storage
 config.yml
+main
+.env

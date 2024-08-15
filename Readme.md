@@ -12,7 +12,7 @@ go mod download
 ```
 - buat file config
 ```
-cp copy.yml.example config.yml
+cp .env.example .env
 ```
 - Jalankan aplikasi
 ```
