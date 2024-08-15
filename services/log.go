@@ -21,6 +21,10 @@ func WriteLogFatal(message interface{}) {
 	log.WithField("stack trace: ", string(debug.Stack())).Fatal(message)
 }
 
+func WriteLogError(message interface{}) {
+	log.WithField("stack trace: ", string(debug.Stack())).Error(message)
+}
+
 // RecoverPanic Writing Log
 func RecoverPanic() {
 	if r := recover(); r != nil {
