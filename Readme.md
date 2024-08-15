@@ -18,6 +18,67 @@ cp .env.example .env
 ```
  go run cmd/server/main.go
 ```
+## How to Deploy
+- Set `.env` file based `.env.example`  file
+```
+cp .env.example .env
+```
+- Adjust the value of .`env` file
+- Run this command to compile app
+```
+go build cmd/server/main.go
+``` 
+- Run the app
+```
+./main
+```
+
+## Running service using systemd service
+- Make new systemd service
+```
+sudo nano /etc/systemd/system/jobs.service
+```
+- Add this code and then save
+```
+[Unit]
+Description=gowebapi
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=10s
+WorkingDirectory=/var/www/html/api-deepface-recognition/(Working direcroty app)
+ExecStart=/var/www/html/api-deepface-recognition/main(compiled file)
+
+[Install]
+WantedBy=multi-user.target
+```
+- Run the service
+```
+sudo systemctl start jobs
+sudo systemctl enable jobs
+```
+- To stop the service run this command :
+```
+sudo systemctl stop jobs
+```
+- To remove the service
+```
+sudo systemctl disable jobs
+```
+- You can check the service in the web browser using port which you already set.
+
+<br>
+
+## Deploy using Dockerfile
+- Build Image
+```
+docker build -t go-project-image .
+```
+- Run Image in Container
+```
+docker run -it --rm --name go-project-container go-project-image
+```
 
 ## Key Directory
 
