@@ -175,7 +175,7 @@ func (c *Client) CreateWithContext(ctx context.Context) (int, map[string]interfa
 
 	if err != nil {
 		fLog.Errorf("HTTPClient.Do got: %v", err.Error())
-		return statusCode, nil, errors.New("Error dial another platform")
+		return statusCode, nil, errors.New("error dial another platform")
 	}
 	defer response.Body.Close()
 
@@ -184,7 +184,7 @@ func (c *Client) CreateWithContext(ctx context.Context) (int, map[string]interfa
 	bodyResponse, err := io.ReadAll(response.Body)
 	if err != nil {
 		fLog.Errorf("ioutil.ReadAll got: %v", err.Error())
-		return statusCode, nil, errors.New("Error read body from another platform")
+		return statusCode, nil, errors.New("error read body from another platform")
 	}
 
 	var result map[string]interface{}
@@ -192,7 +192,7 @@ func (c *Client) CreateWithContext(ctx context.Context) (int, map[string]interfa
 
 	if err != nil {
 		fLog.Errorf("Unmarshal got: %v", err.Error())
-		return statusCode, nil, errors.New("Error Unmarshal Json")
+		return statusCode, nil, errors.New("error Unmarshal Json")
 	}
 
 	return statusCode, result, nil
